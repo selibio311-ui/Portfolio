@@ -1,0 +1,21 @@
+# Root protection rules (Apache)
+Options -Indexes
+
+# Keep the old midterm .html addresses working
+RewriteEngine On
+RewriteRule ^(index|about|skills|projects|resume|contact)\.html$ $1.php [R=301,L]
+
+# Never serve dotfiles, SQL dumps, logs or config files
+<FilesMatch "(^\.|\.(sql|log|md|sample\.php)$|^config\.php$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Optional: force HTTPS on the live server (uncomment after your SSL certificate is active)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
