@@ -1,0 +1,32 @@
+# Uploaded files are DATA, never code.
+Options -Indexes -ExecCGI -Includes
+
+# Turn the PHP engine off in this folder
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .pht .phar
+RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phps .pht .phar
+
+# Allow ONLY image files to be served; deny everything else
+<FilesMatch "^(?!.*\.(jpe?g|png|gif|webp)$).*$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'none'; sandbox"
+</IfModule>
