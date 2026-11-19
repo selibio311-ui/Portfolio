@@ -1,0 +1,13 @@
+# Secrets - never commit
+includes/config.php
+
+# Uploaded files (keep the folder and its .htaccess only)
+uploads/*
+!uploads/.htaccess
+!uploads/.gitkeep
+!uploads/index.html
+
+# Logs / OS files
+*.log
+.DS_Store
+Thumbs.db
